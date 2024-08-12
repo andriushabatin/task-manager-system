@@ -1,5 +1,6 @@
 package com.andriusha.task.management.system.task;
 
+import com.andriusha.task.management.system.user.User;
 import com.andriusha.task.management.system.user.UserMapper;
 import com.andriusha.task.management.system.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +26,14 @@ public class TaskMapper {
     }
 
 
-    public Task toTask(TaskCreationDto dto) {
+    public Task toTask(User author, TaskCreationDto dto) {
         return Task.builder()
                 .id(dto.getId())
                 .heading(dto.getHeading())
                 .description(dto.getDescription())
                 .status(dto.getStatus())
                 .priority(dto.getPriority())
-                .author(userService.getById(dto.getAuthorId()))
+                .author(author)
                 .performer(userService.getById(dto.getPerformerId()))
                 .build();
     }

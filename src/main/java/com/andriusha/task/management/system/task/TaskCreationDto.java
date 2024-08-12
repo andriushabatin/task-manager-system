@@ -12,6 +12,6 @@ public class TaskCreationDto {
     private String description;
     private TaskStatus status;
     private TaskPriority priority;
-    private Long authorId;
+    //private Long authorId;
     private Long performerId;
 }

@@ -14,8 +14,11 @@ public class TaskController {
     private final TaskService service;
 
     @PostMapping("/add")
-    public TaskReadingDto add(@RequestBody TaskCreationDto taskCreationDto) {
-        return service.addTask(taskCreationDto);
+    public TaskReadingDto add(
+            @RequestHeader(value = "Authorization") String header,
+            @RequestBody TaskCreationDto taskCreationDto
+    ) {
+        return service.addTask(header, taskCreationDto);
     }
 
     @PatchMapping("/update/{id}")

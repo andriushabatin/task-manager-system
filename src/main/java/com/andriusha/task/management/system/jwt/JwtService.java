@@ -1,10 +1,13 @@
 package com.andriusha.task.management.system.jwt;
 
+import com.andriusha.task.management.system.user.User;
+import com.andriusha.task.management.system.user.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +19,12 @@ import java.util.Objects;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
     private static final String SECRETE_KEY = "6fIGlvXTk8naldYlhNkLdciVzeK2ku5+qacU+PyjZNe9Qds4zw/HAx2NgosUl0KH";
+
+    private final UserRepository repository;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository repository;
-    private final UserMapper mapper;
 
     public User getById(Long id) {
         return repository.findById(id)
