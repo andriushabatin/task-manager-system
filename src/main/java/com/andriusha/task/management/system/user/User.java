@@ -1,5 +1,6 @@
 package com.andriusha.task.management.system.user;
 
+import com.andriusha.task.management.system.task.Task;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +30,10 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToMany(mappedBy = "author")
+    private List<Task> authorOfTasksList;
+    @OneToMany(mappedBy = "performer")
+    private List<Task> performerOfTasksList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
