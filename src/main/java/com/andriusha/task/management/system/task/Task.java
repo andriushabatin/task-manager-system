@@ -1,5 +1,6 @@
 package com.andriusha.task.management.system.task;
 
+import com.andriusha.task.management.system.comment.Comment;
 import com.andriusha.task.management.system.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,13 +8,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "task")
-public class Task {
+public class Task implements Serializable {
 
     @Id
     @GeneratedValue
@@ -30,4 +34,6 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "performer_id")
     private User performer;
+    @OneToMany(mappedBy = "task")
+    private List<Comment> commentsList;
 }

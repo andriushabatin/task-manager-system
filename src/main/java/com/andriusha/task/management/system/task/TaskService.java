@@ -1,5 +1,7 @@
 package com.andriusha.task.management.system.task;
 
+import com.andriusha.task.management.system.comment.CommentMapper;
+import com.andriusha.task.management.system.comment.CommentRepository;
 import com.andriusha.task.management.system.jwt.JwtService;
 import com.andriusha.task.management.system.user.User;
 import com.andriusha.task.management.system.user.UserRepository;
@@ -16,23 +18,24 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
-    private final TaskMapper mapper;
+    private final CommentRepository commentRepo;
+    private final TaskMapper taskMapper;
+    private final CommentMapper commentMapper;
     private final JwtService jwtService;
 
     public TaskReadingDto addTask(String authHeader,TaskCreationDto taskCreationDto) {
         String jwt = authHeader.substring(7);
-        String authorEmail = jwtService.extractUsername(jwt);
-        User author = userRepository.findByEmail(authorEmail).orElseThrow();
+        User author = jwtService.extractUser(jwt);
 
-        return mapper.toReadingDto(
+        return taskMapper.toReadingDto(
                 taskRepository.save(
-                        mapper.toTask(author, taskCreationDto)
+                        taskMapper.toTask(author, taskCreationDto)
                 )
         );
     }
 
     public TaskReadingDto update(Long id, Map<String, Object> updates) {
-        Task task = mapper.toTask(getById(id));
+        Task task = taskMapper.toTask(getById(id));
 
         updates.forEach((key, value) -> {
                     switch (key) {
@@ -55,18 +58,34 @@ public class TaskService {
                 }
                 );
 
-        return mapper.toReadingDto(taskRepository.save(task));
+        return taskMapper.toReadingDto(taskRepository.save(task));
     }
 
     public TaskReadingDto getById(Long id) {
-        return mapper.toReadingDto(taskRepository.findById(id)
+        return taskMapper.toReadingDto(taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found"))
         );
     }
 
     public List<TaskReadingDto> getAll() {
         return taskRepository.findAll().stream()
-                .map(mapper::toReadingDto)
+                .map(taskMapper::toReadingDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<TaskReadingDto> getAllByAuthorId(Long authorId) {
+        User author = userRepository.findById(authorId).orElseThrow();
+
+        return author.getAuthorOfTasksList().stream()
+                .map(taskMapper::toReadingDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<TaskReadingDto> getAllByPerformerId(Long id) {
+        User performer = userRepository.findById(id).orElseThrow();
+
+        return performer.getPerformerOfTasksList().stream()
+                .map(taskMapper::toReadingDto)
                 .collect(Collectors.toList());
     }
 

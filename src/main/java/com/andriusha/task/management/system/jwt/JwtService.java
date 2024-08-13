@@ -30,6 +30,11 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    public User extractUser(String token) {
+        String authorEmail = extractUsername(token);
+        return repository.findByEmail(authorEmail).orElseThrow();
+    }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);

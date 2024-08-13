@@ -1,17 +1,22 @@
 package com.andriusha.task.management.system.task;
 
+import com.andriusha.task.management.system.comment.CommentMapper;
 import com.andriusha.task.management.system.user.User;
 import com.andriusha.task.management.system.user.UserMapper;
 import com.andriusha.task.management.system.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.stream.Collectors;
+
 @Component
 @RequiredArgsConstructor
 public class TaskMapper {
 
     private final UserService userService;
-    private final UserMapper mapper;
+    private final UserMapper userMapper;
+    private final CommentMapper commentMapper;
 
     public TaskReadingDto toReadingDto(Task task) {
         return TaskReadingDto.builder()
@@ -20,8 +25,13 @@ public class TaskMapper {
                 .description(task.getDescription())
                 .status(task.getStatus())
                 .priority(task.getPriority())
-                .author(mapper.toDto(task.getAuthor()))
-                .performer(mapper.toDto(task.getPerformer()))
+                .author(userMapper.toDto(task.getAuthor()))
+                .performer(userMapper.toDto(task.getPerformer()))
+                .comments(
+                        task.getCommentsList().stream()
+                                .map(commentMapper::toDto)
+                                .collect(Collectors.toList())
+                )
                 .build();
     }
 
@@ -35,6 +45,7 @@ public class TaskMapper {
                 .priority(dto.getPriority())
                 .author(author)
                 .performer(userService.getById(dto.getPerformerId()))
+                .commentsList(Collections.emptyList())
                 .build();
     }
 
