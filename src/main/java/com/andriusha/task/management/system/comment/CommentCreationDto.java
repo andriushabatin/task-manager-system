@@ -1,12 +1,14 @@
 package com.andriusha.task.management.system.comment;
 
-import lombok.Builder;
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CommentCreationDto {
 
-    private Long id;
+    @NotBlank(message = "content id required")
     private String content;
 }

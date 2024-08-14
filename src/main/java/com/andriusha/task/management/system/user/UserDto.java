@@ -11,7 +11,5 @@ public class UserDto {
 
     private Long id;
     private String email;
-    private List<Long> authorOfTasks;
-    private List<Long> performerOfTasks;
 }
 

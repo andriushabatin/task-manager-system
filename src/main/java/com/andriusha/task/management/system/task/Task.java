@@ -34,6 +34,6 @@ public class Task implements Serializable {
     @ManyToOne
     @JoinColumn(name = "performer_id")
     private User performer;
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<Comment> commentsList;
 }

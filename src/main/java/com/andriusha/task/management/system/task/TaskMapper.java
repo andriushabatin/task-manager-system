@@ -38,13 +38,12 @@ public class TaskMapper {
 
     public Task toTask(User author, TaskCreationDto dto) {
         return Task.builder()
-                .id(dto.getId())
                 .heading(dto.getHeading())
                 .description(dto.getDescription())
-                .status(dto.getStatus())
-                .priority(dto.getPriority())
+                .status(TaskStatus.NOT_STARTED)
+                .priority(TaskPriority.valueOf(dto.getPriority()))
                 .author(author)
-                .performer(userService.getById(dto.getPerformerId()))
+                .performer(userService.getById(Long.parseLong(dto.getPerformerId())))
                 .commentsList(Collections.emptyList())
                 .build();
     }

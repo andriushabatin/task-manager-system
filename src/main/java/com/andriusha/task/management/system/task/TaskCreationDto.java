@@ -1,5 +1,6 @@
 package com.andriusha.task.management.system.task;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,11 +8,12 @@ import lombok.Data;
 @Builder
 public class TaskCreationDto {
 
-    private Long id;
+    @NotBlank(message = "heading is required")
     private String heading;
+    @NotBlank(message = "description is required")
     private String description;
-    private TaskStatus status;
-    private TaskPriority priority;
-    //private Long authorId;
-    private Long performerId;
+    @NotBlank(message = "priority is required")
+    private String priority;
+    @NotBlank(message = "performerId is required")
+    private String performerId;
 }

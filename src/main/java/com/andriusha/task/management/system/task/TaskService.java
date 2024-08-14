@@ -1,7 +1,5 @@
 package com.andriusha.task.management.system.task;
 
-import com.andriusha.task.management.system.comment.CommentMapper;
-import com.andriusha.task.management.system.comment.CommentRepository;
 import com.andriusha.task.management.system.jwt.JwtService;
 import com.andriusha.task.management.system.user.User;
 import com.andriusha.task.management.system.user.UserRepository;
@@ -18,9 +16,7 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
-    private final CommentRepository commentRepo;
     private final TaskMapper taskMapper;
-    private final CommentMapper commentMapper;
     private final JwtService jwtService;
 
     public TaskReadingDto addTask(String authHeader,TaskCreationDto taskCreationDto) {
@@ -35,7 +31,8 @@ public class TaskService {
     }
 
     public TaskReadingDto update(Long id, Map<String, Object> updates) {
-        Task task = taskMapper.toTask(getById(id));
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Error: Not found task with id=" + id));
 
         updates.forEach((key, value) -> {
                     switch (key) {
@@ -52,7 +49,7 @@ public class TaskService {
                             task.setPriority(TaskPriority.valueOf((String) value));
                         }
                         default -> {
-                            throw new IllegalArgumentException("Invalid field: " + key);
+                            throw new IllegalArgumentException("Error: Invalid field '" + key + "'");
                         }
                     }
                 }
@@ -63,7 +60,7 @@ public class TaskService {
 
     public TaskReadingDto getById(Long id) {
         return taskMapper.toReadingDto(taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"))
+                .orElseThrow(() -> new IllegalArgumentException("Error: Not found task with id=" + id))
         );
     }
 
@@ -73,8 +70,10 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    public List<TaskReadingDto> getAllByAuthorId(Long authorId) {
-        User author = userRepository.findById(authorId).orElseThrow();
+    public List<TaskReadingDto> getAllByAuthorId(Long id) {
+        User author = userRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Error: Not found User with id=" + id)
+        );
 
         return author.getAuthorOfTasksList().stream()
                 .map(taskMapper::toReadingDto)
@@ -82,7 +81,9 @@ public class TaskService {
     }
 
     public List<TaskReadingDto> getAllByPerformerId(Long id) {
-        User performer = userRepository.findById(id).orElseThrow();
+        User performer = userRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Error: Not found User with id=" + id)
+        );
 
         return performer.getPerformerOfTasksList().stream()
                 .map(taskMapper::toReadingDto)
@@ -90,12 +91,19 @@ public class TaskService {
     }
 
     public String deleteById(Long id) {
+        getById(id);
         taskRepository.deleteById(id);
         return "Task deleted";
     }
 
     public String deleteAll() {
-        taskRepository.deleteAll();
-        return "All tasks deleted";
+        List<Task> tasks = taskRepository.findAll();
+
+        if(tasks.isEmpty()) {
+            return "No tasks to delete";
+        } else {
+            taskRepository.deleteAll();
+            return "All tasks deleted";
+        }
     }
 }

@@ -15,7 +15,6 @@ public class CommentMapper {
     public CommentReadingDto toDto(Comment comment) {
         return CommentReadingDto.builder()
                 .id(comment.getId())
-                .taskId(comment.getTask().getId())
                 .content(comment.getContent())
                 .author(userMapper.toDto(comment.getAuthor()))
                 .build();
@@ -23,7 +22,6 @@ public class CommentMapper {
 
     public Comment toComment(User author, Task task, CommentCreationDto dto) {
         return Comment.builder()
-                .id(dto.getId())
                 .content(dto.getContent())
                 .task(task)
                 .author(author)

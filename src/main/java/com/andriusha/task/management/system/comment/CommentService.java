@@ -22,7 +22,8 @@ public class CommentService {
         String jwt = authHeader.substring(7);
 
         User author = jwtService.extractUser(jwt);
-        Task task = taskRepository.findById(taskId).orElseThrow();
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new IllegalArgumentException("Error: Not found Task with id=" + taskId));
 
         return commentMapper.toDto(
                 commentRepository.save(

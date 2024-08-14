@@ -3,6 +3,7 @@ package com.andriusha.task.management.system.task;
 import com.andriusha.task.management.system.comment.CommentCreationDto;
 import com.andriusha.task.management.system.comment.CommentReadingDto;
 import com.andriusha.task.management.system.comment.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class TaskController {
     @PostMapping("/add")
     public TaskReadingDto add(
             @RequestHeader(value = "Authorization") String header,
-            @RequestBody TaskCreationDto taskCreationDto
+            @RequestBody @Valid TaskCreationDto taskCreationDto
     ) {
         return taskService.addTask(header, taskCreationDto);
     }
@@ -40,15 +41,14 @@ public class TaskController {
         return taskService.getAll();
     }
 
-    //  tasks/get/all-of-author/1
     @GetMapping("/get/all-by-author/{authorId}")
     public List<TaskReadingDto> getAllByAuthorId(@PathVariable Long authorId) {
         return taskService.getAllByAuthorId(authorId);
     }
 
-    @GetMapping("/get-all-by-performer/{id}")
-    public List<TaskReadingDto> getAllByPerformerId(@PathVariable Long id) {
-        return taskService.getAllByPerformerId(id);
+    @GetMapping("/get-all-by-performer/{performerId}")
+    public List<TaskReadingDto> getAllByPerformerId(@PathVariable Long performerId) {
+        return taskService.getAllByPerformerId(performerId);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -65,9 +65,7 @@ public class TaskController {
     public CommentReadingDto addComment(
             @RequestHeader(value = "Authorization") String header,
             @PathVariable Long taskId,
-            @RequestBody  CommentCreationDto commentCreationDto) {
+            @RequestBody @Valid CommentCreationDto commentCreationDto) {
         return commentService.addComment(header, taskId, commentCreationDto);
     }
-
-
 }

@@ -11,6 +11,6 @@ public class UserService {
 
     public User getById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Error: User not found"));
     }
 }

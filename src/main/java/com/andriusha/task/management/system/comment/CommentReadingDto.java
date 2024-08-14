@@ -9,7 +9,6 @@ import lombok.Data;
 public class CommentReadingDto {
 
     Long id;
-    Long taskId;
     String content;
     UserDto author;
 }
