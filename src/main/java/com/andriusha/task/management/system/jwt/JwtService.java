@@ -32,7 +32,8 @@ public class JwtService {
 
     public User extractUser(String token) {
         String authorEmail = extractUsername(token);
-        return repository.findByEmail(authorEmail).orElseThrow();
+        return repository.findByEmail(authorEmail)
+                .orElseThrow(() -> new IllegalArgumentException("Error: Not found user"));
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {

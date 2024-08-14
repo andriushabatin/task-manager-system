@@ -1,5 +1,6 @@
 package com.andriusha.task.management.system.exception;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,14 +32,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(SQLException.class)
-    public ResponseEntity<String> handleSqlException(RuntimeException ex) {
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<String> handleSqlException(ConstraintViolationException ex) {
         return new ResponseEntity<>("Error: Email is already exist", HttpStatus.CONFLICT);
     }
-
-//    @ExceptionHandler(RuntimeException.class)
-//    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
-//        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-//    }
-
 }

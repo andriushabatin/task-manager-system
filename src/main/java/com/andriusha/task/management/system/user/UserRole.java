@@ -1,6 +1,6 @@
 package com.andriusha.task.management.system.user;
 
-public enum Role {
+public enum UserRole {
 
     ADMIN,
     USER

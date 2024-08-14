@@ -1,7 +1,7 @@
 package com.andriusha.task.management.system.auth;
 
 import com.andriusha.task.management.system.jwt.JwtService;
-import com.andriusha.task.management.system.user.Role;
+import com.andriusha.task.management.system.user.UserRole;
 import com.andriusha.task.management.system.user.User;
 import com.andriusha.task.management.system.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class AuthenticationService {
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
+                .role(UserRole.USER)
                 .build();
         repository.save(user);
 
