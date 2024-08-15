@@ -28,6 +28,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("api/v1/auth/register")
                         .permitAll()
+                        .requestMatchers("api/v1/auth/authentication")
+                        .permitAll()
                         .anyRequest()
                         .authenticated()
                 )

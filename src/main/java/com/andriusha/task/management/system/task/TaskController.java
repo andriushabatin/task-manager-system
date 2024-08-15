@@ -46,7 +46,7 @@ public class TaskController {
         return taskService.getAllByAuthorId(authorId);
     }
 
-    @GetMapping("/get-all-by-performer/{performerId}")
+    @GetMapping("/get/all-by-performer/{performerId}")
     public List<TaskReadingDto> getAllByPerformerId(@PathVariable Long performerId) {
         return taskService.getAllByPerformerId(performerId);
     }

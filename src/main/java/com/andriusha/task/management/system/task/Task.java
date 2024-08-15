@@ -22,18 +22,25 @@ public class Task implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
+
     private String heading;
+
     private String description;
+
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
+
     @Enumerated(EnumType.STRING)
     private TaskPriority priority;
+
     @ManyToOne
     @JoinColumn(name = "author_id")
     private User author;
+
     @ManyToOne
     @JoinColumn(name = "performer_id")
     private User performer;
+
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<Comment> commentsList;
 }

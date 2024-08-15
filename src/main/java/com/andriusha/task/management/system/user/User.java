@@ -31,9 +31,9 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Task> authorOfTasksList;
-    @OneToMany(mappedBy = "performer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "performer", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Task> performerOfTasksList;
 
     @Override

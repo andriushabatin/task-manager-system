@@ -51,4 +51,8 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .build();
     }
+
+    public void deleteAll() {
+        repository.deleteAll();
+    }
 }

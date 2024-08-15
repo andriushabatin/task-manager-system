@@ -19,9 +19,12 @@ public class Comment {
     @Id
     @GeneratedValue
     Long id;
+
     @ManyToOne
     @JoinColumn(name = "task_id")
     Task task;
+
     String content;
+
     User author;
 }

@@ -35,7 +35,6 @@ public class TaskMapper {
                 .build();
     }
 
-
     public Task toTask(User author, TaskCreationDto dto) {
         return Task.builder()
                 .heading(dto.getHeading())

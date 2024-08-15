@@ -13,9 +13,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final TaskRepository taskRepository;
-
     private final JwtService jwtService;
-
     private final CommentMapper commentMapper;
 
     public CommentReadingDto addComment(String authHeader, Long taskId, CommentCreationDto commentDto) {
