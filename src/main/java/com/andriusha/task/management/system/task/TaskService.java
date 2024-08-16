@@ -48,6 +48,15 @@ public class TaskService {
                         case "priority" -> {
                             task.setPriority(TaskPriority.valueOf((String) value));
                         }
+                        case "performer" -> {
+                            Long performerId = Long.parseLong((String) value);
+                            task.setPerformer(
+                                    userRepository.findById(performerId)
+                                            .orElseThrow(() -> new IllegalArgumentException(
+                                                    "Error: Not found user with id=" + performerId)
+                                            )
+                            );
+                        }
                         default -> {
                             throw new IllegalArgumentException("Error: Invalid field '" + key + "'");
                         }
